@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoalTrack | Supply Chain Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+  <link rel="stylesheet" href="/style/style.css">
+   <style>
+    :root {
+      --primary: #f59e0b;
+      --primary-dark: #d97706;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --rose-500: #f43f5e;
+      --emerald-500: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--slate-900);
+      color: var(--slate-100);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Auth Page Centering Layout */
+    .auth-page {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top right, #1e293b, #0f172a);
+      padding: 1rem;
+      z-index: 50;
+      overflow-y: auto;
+    }
+
+    .login-shell {
+      width: 100%;
+      max-width: 440px;
+      margin: auto;
+    }
+
+    .login-card {
+      background: var(--slate-800);
+      border: 1px solid var(--slate-700);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      background: var(--primary);
+      color: var(--slate-900);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    .brand-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 1.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    .login-card h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .tagline {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .field-group label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #cbd5e1;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .field-icon {
+      position: absolute;
+      left: 1rem;
+      color: #64748b;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      background: var(--slate-900);
+      border: 1px solid var(--slate-700);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem 0.75rem 2.75rem;
+      color: white;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .input-wrap input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+    }
+
+    .password-wrap input {
+      padding-right: 2.75rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .toggle-password:hover {
+      color: white;
+    }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.875rem;
+    }
+
+    .check-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      color: #cbd5e1;
+    }
+
+    .remember-row a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .remember-row a:hover {
+      text-decoration: underline;
+    }
+
+    .login-error {
+      color: var(--rose-500);
+      font-size: 0.875rem;
+      min-height: 1.2rem;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      color: var(--slate-900);
+      font-weight: 700;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+
+    .primary-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .register-prompt {
+      margin-top: 1.25rem;
+      text-align: center;
+      font-size: 0.875rem;
+      color: #94a3b8;
+    }
+
+    .register-prompt a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .register-prompt a:hover {
+      text-decoration: underline;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 1.25rem 0;
+      color: #64748b;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--slate-700);
+    }
+
+    .divider span {
+      padding: 0 0.75rem;
+    }
+
+    .google-btn {
+      width: 100%;
+      background: var(--slate-900);
+      border: 1px solid var(--slate-700);
+      color: white;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      transition: background 0.2s;
+    }
+
+    .google-btn:hover {
+      background: var(--slate-700);
+    }
+
+    .g-letter {
+      font-weight: bold;
+      color: #ea4335;
+    }
+
+    /* Dashboard Shell & Layout */
+    .app-page {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: var(--slate-800);
+      border-right: 1px solid var(--slate-700);
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.75rem 1rem;
+      color: #94a3b8;
+      text-decoration: none;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--primary);
+    }
+
+    .logout-btn {
+      background: none;
+      border: 1px solid var(--slate-700);
+      color: #94a3b8;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: var(--rose-500);
+      border-color: var(--rose-500);
+      color: white;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .topbar {
+      height: 70px;
+      background: var(--slate-800);
+      border-bottom: 1px solid var(--slate-700);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+
+    .breadcrumb {
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      background: var(--slate-900);
+      border: 1px solid var(--slate-700);
+      border-radius: 50%;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--slate-900);
+      border: 1px solid var(--slate-700);
+      padding: 0.35rem 1rem 0.35rem 0.35rem;
+      border-radius: 2rem;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: var(--slate-900);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .dashboard-body {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .welcome-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .dashboard-label {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .welcome-row h2 {
+      font-size: 1.5rem;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .add-btn {
+      background: var(--primary);
+      color: var(--slate-900);
+      border: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .add-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .stat-card {
+      background: var(--slate-800);
+      border: 1px solid var(--slate-700);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .stat-icon.orange { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+    .stat-icon.blue { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+    .stat-icon.green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+
+    .stat-content span {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .stat-content strong {
+      display: block;
+      font-size: 1.25rem;
+      font-family: 'Space Grotesk', sans-serif;
+      margin-top: 0.15rem;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        width: 80px;
+        padding: 1rem 0.5rem;
+      }
+      .brand-text, .nav-item span, .logout-btn span {
+        display: none;
+      }
+    }
+
+    .panel {
+      background: var(--slate-800);
+      border: 1px solid var(--slate-700);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .panel-header h3 {
+      font-size: 1.1rem;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .panel-tag {
+      font-size: 0.75rem;
+      background: var(--slate-900);
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      color: #94a3b8;
+      border: 1px solid var(--slate-700);
+    }
+
+    .bar-chart {
+      height: 200px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1rem;
+    }
+
+    .bar-group {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    .bar {
+      width: 100%;
+      max-width: 36px;
+      background: linear-gradient(to top, #d97706, #f59e0b);
+      border-radius: 4px 4px 0 0;
+      transition: height 0.3s;
+    }
+
+    .bar-group small {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    .activity-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .activity-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+      margin-top: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .table-panel {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
+      color: #94a3b8;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--slate-700);
+      background: rgba(15, 23, 42, 0.4);
+    }
+
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--slate-700);
+      color: #e2e8f0;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status-tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--emerald-500);
+    }
+
+    .mini-btn {
+      background: none;
+      border: 1px solid var(--slate-700);
+      color: #cbd5e1;
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.35rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .mini-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .module-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 1rem 0 0.75rem;
+      padding: 0.85rem 1rem;
+      background: rgba(15, 23, 42, 0.35);
+      border: 1px solid var(--slate-700);
+      border-radius: 0.75rem;
+    }
+
+    .toolbar-fields {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+
+    .search-field,
+    .filter-select,
+    .form-field,
+    .textarea-field {
+      width: 100%;
+      background: var(--slate-900);
+      border: 1px solid var(--slate-700);
+      border-radius: 0.5rem;
+      padding: 0.7rem 0.85rem;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+    }
+
+    .search-field {
+      max-width: 220px;
+      min-width: 180px;
+      flex: 1;
+    }
+
+    .filter-select {
+      max-width: 180px;
+      min-width: 150px;
+      flex: 1;
+    }
+
+    .panel-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .danger-btn {
+      border-color: rgba(244, 63, 94, 0.4);
+      color: #fda4af;
+    }
+
+    .danger-btn:hover {
+      border-color: rgba(244, 63, 94, 0.8);
+      color: #fff;
+      background: rgba(244, 63, 94, 0.08);
+    }
+
+    .module-row.selected td {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .chart-box {
+      padding: 0.75rem;
+      border: 1px solid var(--slate-700);
+      border-radius: 0.75rem;
+      background: rgba(15, 23, 42, 0.28);
+      min-height: 220px;
+    }
+
+    .chart-box h4 {
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .chart-box canvas {
+      width: 100% !important;
+      height: 170px !important;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      z-index: 200;
+    }
+
+    .modal-backdrop.visible {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(100%, 520px);
+      background: var(--slate-800);
+      border: 1px solid var(--slate-700);
+      border-radius: 1rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--slate-700);
+    }
+
+    .modal-header h3 {
+      font-size: 1.05rem;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    .entity-form {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    .field-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .field-block label {
+      color: #cbd5e1;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .password-step {
+      display: none;
+      gap: 1rem;
+      flex-direction: column;
+    }
+
+    .password-step.visible {
+      display: flex;
+    }
+
+    .helper-note {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-top: -0.25rem;
+    }
+
+    @media (max-width: 720px) {
+      .chart-grid,
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar-fields {
+        width: 100%;
+      }
+
+      .search-field,
+      .filter-select {
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Page -->
+  <div id="loginPage" class="auth-page">
+    <div class="login-shell">
+      <!-- Login Form Card -->
+      <div id="loginCardView" class="login-card">
+        <div class="logo-row">
+          <div class="brand-mark">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <div class="brand-text">CoalTrack</div>
+        </div>
+
+        <div class="subtitle">Coal supply chain management</div>
+
+        <h1>Welcome to CoalTrack</h1>
+        <p class="tagline">Sign in to check shipments, inventory, and deliveries.</p>
+
+        <form id="loginForm" class="auth-form" novalidate>
+          <div class="field-group">
+            <label for="username">Username</label>
+            <div class="input-wrap">
+              <span class="field-icon"><i class="fa-solid fa-user"></i></span>
+              <input id="username" type="text" placeholder="Enter your username" autocomplete="username" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="password">Password</label>
+            <div class="input-wrap password-wrap">
+              <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+              <input id="password" type="password" placeholder="Enter your password" autocomplete="current-password" />
+              <button type="button" class="toggle-password" aria-label="Show password">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="remember-row">
+            <label class="check-label">
+              <input id="rememberMe" type="checkbox" />
+              <span>Remember Me</span>
+            </label>
+
+            <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+          </div>
+
+          <p id="loginError" class="login-error" aria-live="polite"></p>
+
+          <button type="submit" class="primary-btn">Login</button>
+        </form>
+
+        <div class="register-prompt">
+          New customer? <a href="#" id="showRegisterLink">Create an account</a>
+        </div>
+
+        <div class="divider"><span>OR</span></div>
+
+        <button type="button" class="google-btn">
+          <span class="g-letter">G</span>Continue with Google
+        </button>
+      </div>
+
+      <!-- Register Form Card (Hidden by default) -->
+      <div id="registerCardView" class="login-card" style="display: none;">
+        <div class="logo-row">
+          <div class="brand-mark">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <div class="brand-text">CoalTrack</div>
+        </div>
+
+        <div class="subtitle">New Customer Registration</div>
+
+        <h1>Join CoalTrack</h1>
+        <p class="tagline">Register your company to place orders and track shipments.</p>
+
+        <form id="registerForm" class="auth-form" novalidate>
+          <div class="field-group">
+            <label for="regCompany">Company Name</label>
+            <div class="input-wrap">
+              <span class="field-icon"><i class="fa-solid fa-building"></i></span>
+              <input id="regCompany" type="text" placeholder="e.g. Apex Steel Corp" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="regUsername">Choose Username</label>
+            <div class="input-wrap">
+              <span class="field-icon"><i class="fa-solid fa-user"></i></span>
+              <input id="regUsername" type="text" placeholder="Choose a username" autocomplete="username" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="regPassword">Choose Password</label>
+            <div class="input-wrap">
+              <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+              <input id="regPassword" type="password" placeholder="Create a password" autocomplete="new-password" />
+            </div>
+          </div>
+
+          <p id="registerError" class="login-error" aria-live="polite"></p>
+
+          <button type="submit" class="primary-btn">Register & Sign In</button>
+        </form>
+
+        <div class="register-prompt">
+          Already have an account? <a href="#" id="showLoginLink">Back to Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Page -->
+  <div id="dashboardPage" class="app-page" style="display: none;">
+    <aside class="sidebar">
+      <div class="brand-row">
+        <div class="brand-mark">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <div class="brand-text">CoalTrack</div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#" id="navDashboard" class="nav-item active"><i class="fa-solid fa-gauge"></i> <span>Dashboard</span></a>
+        <a href="#" id="navInventory" class="nav-item"><i class="fa-solid fa-boxes-stacked"></i> <span>Inventory</span></a>
+        <a href="#" id="navShipments" class="nav-item"><i class="fa-solid fa-truck-fast"></i> <span>Shipments</span></a>
+        <a href="#" id="navCustomers" class="nav-item"><i class="fa-solid fa-users"></i> <span>Customers</span></a>
+      </nav>
+
+      <button id="logoutBtn" class="logout-btn">
+        <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
+      </button>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumb" id="breadcrumbText">Dashboard / Overview</div>
+
+        <div class="top-actions">
+          <button class="icon-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i></button>
+          <div class="user-pill">
+            <div class="user-avatar" id="avatarInitial">A</div>
+            <span id="topUserName">Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="dashboard-body">
+        <div class="welcome-row">
+          <div>
+            <p class="dashboard-label">Welcome back</p>
+            <h2 id="welcomeMessage">Welcome to CoalTrack Supply Chain Management System</h2>
+          </div>
+          <button class="add-btn"><i class="fa-solid fa-plus"></i> New Report</button>
+        </div>
+
+        <div id="statsGrid" class="stats-grid"></div>
+
+        <div id="dashboardMainContent">
+          <div class="content-grid">
+            <section class="panel chart-panel">
+              <div class="panel-header">
+                <h3>Shipment Flow</h3>
+                <span class="panel-tag">This Month</span>
+              </div>
+
+              <div id="chartGrid" class="chart-grid">
+                <div class="chart-box">
+                  <h4>Monthly Shipments</h4>
+                  <canvas id="monthlyShipmentsChart"></canvas>
+                </div>
+                <div class="chart-box">
+                  <h4>Inventory Distribution</h4>
+                  <canvas id="inventoryDistributionChart"></canvas>
+                </div>
+                <div class="chart-box">
+                  <h4>Customer Growth</h4>
+                  <canvas id="customerGrowthChart"></canvas>
+                </div>
+                <div class="chart-box">
+                  <h4>Order Statistics</h4>
+                  <canvas id="orderStatisticsChart"></canvas>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel activity-panel">
+              <div class="panel-header">
+                <h3>Recent Activities</h3>
+                <span class="panel-tag">Live</span>
+              </div>
+
+              <ul id="activityList" class="activity-list"></ul>
+            </section>
+          </div>
+        </div>
+
+        <section class="panel table-panel">
+          <div class="panel-header">
+            <h3 id="tableTitle">Inventory Overview</h3>
+            <div id="panelActions" class="panel-actions">
+              <button class="mini-btn">View All</button>
+            </div>
+          </div>
+
+          <div id="moduleToolbar" class="module-toolbar" style="display: none;"></div>
+
+          <table>
+            <thead>
+              <tr id="tableHeaders">
+                <th>Item</th>
+                <th>Location</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="forgotPasswordModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="forgotPasswordTitle">
+      <div class="modal-header">
+        <h3 id="forgotPasswordTitle">Forgot Password</h3>
+        <button type="button" class="modal-close" id="closeForgotPassword" aria-label="Close">×</button>
+      </div>
+
+      <form id="forgotPasswordForm" class="entity-form">
+        <div id="forgotPasswordStepEmail" class="password-step visible">
+          <div class="field-block">
+            <label for="resetEmail">Email Address</label>
+            <input id="resetEmail" class="form-field" type="email" placeholder="Enter your registered email" required />
+          </div>
+          <div class="helper-note">We will generate a one-time OTP for your account.</div>
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">Send OTP</button>
+          </div>
+        </div>
+
+        <div id="forgotPasswordStepOtp" class="password-step">
+          <div class="field-block">
+            <label for="resetOtp">OTP</label>
+            <input id="resetOtp" class="form-field" type="text" placeholder="Enter the 6-digit OTP" maxlength="6" required />
+          </div>
+          <div class="helper-note">Use the temporary code saved in your browser session.</div>
+          <div class="form-actions">
+            <button type="button" class="mini-btn" id="backToEmailStep">Back</button>
+            <button type="button" class="primary-btn" id="verifyOtpBtn">Verify OTP</button>
+          </div>
+        </div>
+
+        <div id="forgotPasswordStepNew" class="password-step">
+          <div class="field-block">
+            <label for="newPassword">New Password</label>
+            <input id="newPassword" class="form-field" type="password" placeholder="Enter your new password" required />
+          </div>
+          <div class="field-block">
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" class="form-field" type="password" placeholder="Confirm your new password" required />
+          </div>
+          <div class="form-actions">
+            <button type="button" class="mini-btn" id="backToOtpStep">Back</button>
+            <button type="submit" class="primary-btn">Update Password</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="entityModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="entityModalTitle">
+      <div class="modal-header">
+        <h3 id="entityModalTitle">Add Record</h3>
+        <button type="button" class="modal-close" id="entityModalClose" aria-label="Close">×</button>
+      </div>
+
+      <form id="entityForm" class="entity-form">
+        <div id="entityFormFields"></div>
+        <div class="form-actions">
+          <button type="button" class="mini-btn" id="cancelEntityModal">Cancel</button>
+          <button type="submit" class="primary-btn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const loginPage = document.getElementById("loginPage");
+    const dashboardPage = document.getElementById("dashboardPage");
+    const loginForm = document.getElementById("loginForm");
+    const loginError = document.getElementById("loginError");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const rememberMe = document.getElementById("rememberMe");
+    const navDashboard = document.getElementById("navDashboard");
+    const navInventory = document.getElementById("navInventory");
+    const navShipments = document.getElementById("navShipments");
+    const navCustomers = document.getElementById("navCustomers");
+    const breadcrumbText = document.getElementById("breadcrumbText");
+    const dashboardMainContent = document.getElementById("dashboardMainContent");
+    const tableTitle = document.getElementById("tableTitle");
+    const tableHeaders = document.getElementById("tableHeaders");
+    const tableBody = document.getElementById("tableBody");
+    const panelActions = document.getElementById("panelActions");
+    const moduleToolbar = document.getElementById("moduleToolbar");
+
+    const loginCardView = document.getElementById("loginCardView");
+    const registerCardView = document.getElementById("registerCardView");
+    const showRegisterLink = document.getElementById("showRegisterLink");
+    const showLoginLink = document.getElementById("showLoginLink");
+    const registerForm = document.getElementById("registerForm");
+    const regCompany = document.getElementById("regCompany");
+    const regUsername = document.getElementById("regUsername");
+    const regPassword = document.getElementById("regPassword");
+    const registerError = document.getElementById("registerError");
+    const forgotPasswordModal = document.getElementById("forgotPasswordModal");
+    const forgotPasswordLink = document.getElementById("forgotPasswordLink");
+    const closeForgotPassword = document.getElementById("closeForgotPassword");
+    const forgotPasswordForm = document.getElementById("forgotPasswordForm");
+    const resetEmail = document.getElementById("resetEmail");
+    const resetOtp = document.getElementById("resetOtp");
+    const newPassword = document.getElementById("newPassword");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const forgotPasswordStepEmail = document.getElementById("forgotPasswordStepEmail");
+    const forgotPasswordStepOtp = document.getElementById("forgotPasswordStepOtp");
+    const forgotPasswordStepNew = document.getElementById("forgotPasswordStepNew");
+    const verifyOtpBtn = document.getElementById("verifyOtpBtn");
+    const backToEmailStep = document.getElementById("backToEmailStep");
+    const backToOtpStep = document.getElementById("backToOtpStep");
+
+    let currentRole = "Admin";
+    let currentView = "dashboard";
+    let currentUser = "admin";
+    let selectedInventoryId = null;
+    let selectedShipmentId = null;
+    let selectedCustomerId = null;
+
+    const STORAGE_KEYS = {
+      inventory: "coaltrack_inventory",
+      shipments: "coaltrack_shipments",
+      customers: "coaltrack_customers",
+      forgotPassword: "coaltrack_forgot_password"
+    };
+
+    const defaultInventory = [
+      { id: "INV-1001", itemName: "Anthracite Grade A", location: "Korba Yard", quantity: "18,500 Tons", status: "Healthy", lastUpdated: "2 min ago" },
+      { id: "INV-1002", itemName: "Bituminous Grade B", location: "Nagpur Route", quantity: "12,340 Tons", status: "Healthy", lastUpdated: "15 min ago" },
+      { id: "INV-1003", itemName: "Lignite Premium", location: "Bina Depot", quantity: "9,120 Tons", status: "Low Stock", lastUpdated: "35 min ago" },
+      { id: "INV-1004", itemName: "Coking Coal Supreme", location: "Raigarh Plant", quantity: "7,900 Tons", status: "Critical", lastUpdated: "8 min ago" },
+      { id: "INV-1005", itemName: "Steam Coal Industrial", location: "Durg Terminal", quantity: "6,480 Tons", status: "Low Stock", lastUpdated: "42 min ago" }
+    ];
+
+    const defaultShipments = [
+      { id: "SHIP-901", shipmentId: "SHIP-901", source: "Korba Mine", destination: "Nagpur Terminal", quantity: "1,250 Tons", dispatchDate: "2026-09-15", deliveryDate: "2026-09-20", status: "In Transit" },
+      { id: "SHIP-902", shipmentId: "SHIP-902", source: "Raigarh Yard", destination: "Bhilai Plant", quantity: "980 Tons", dispatchDate: "2026-09-12", deliveryDate: "2026-09-18", status: "Delayed" },
+      { id: "SHIP-903", shipmentId: "SHIP-903", source: "Bilaspur Depot", destination: "Durg Hub", quantity: "1,450 Tons", dispatchDate: "2026-09-10", deliveryDate: "2026-09-17", status: "Delivered" },
+      { id: "SHIP-904", shipmentId: "SHIP-904", source: "Wardha Route", destination: "Jamshedpur Foundry", quantity: "860 Tons", dispatchDate: "2026-09-19", deliveryDate: "2026-09-26", status: "Pending" }
+    ];
+
+    const defaultCustomers = [
+      { id: "CUST-101", customerName: "Riya Sharma", companyName: "Apex Steel Corp", email: "riya@apexsteel.com", phoneNumber: "+91 98765 43210", address: "Bhilai, Chhattisgarh", status: "Active", username: "apex" },
+      { id: "CUST-102", customerName: "Naman Verma", companyName: "Kalyani Coalworks", email: "naman@kalyani.co", phoneNumber: "+91 91234 56789", address: "Raigarh, Chhattisgarh", status: "Pending", username: "kalyani" },
+      { id: "CUST-103", customerName: "Aisha Khan", companyName: "Green Mines Ltd.", email: "aisha@greenmines.in", phoneNumber: "+91 99881 11222", address: "Nagpur, Maharashtra", status: "Active", username: "green" }
+    ];
+
+    const credentials = {
+      admin: { password: "admin123", role: "Admin", email: "admin@coaltrack.com" },
+      manager: { password: "manager123", role: "Manager", email: "manager@coaltrack.com" },
+      customer: { password: "customer123", role: "Customer", email: "customer@coaltrack.com" }
+    };
+
+    const dashboardData = {
+      Admin: {
+        stats: [
+          { label: "Total Customers", value: "1,248", icon: "fa-solid fa-users", accent: "orange" },
+          { label: "Total Orders", value: "3,842", icon: "fa-solid fa-file-invoice", accent: "blue" },
+          { label: "Total Shipments", value: "1,964", icon: "fa-solid fa-truck-fast", accent: "green" },
+          { label: "Coal Inventory", value: "52,400 Tons", icon: "fa-solid fa-cubes", accent: "orange" }
+        ],
+        activities: [
+          "New coal order approved from Jindal Steel",
+          "Shipment #CS-2094 reached warehouse in Korba",
+          "Inventory updated for Anthracite grade",
+          "Customer payment received from Green Mines"
+        ],
+        tableTitle: "Inventory Overview",
+        rows: [
+          ["Anthracite", "Korba Yard", "18,500 Tons", "Healthy", "2 min ago"],
+          ["Bituminous", "Nagpur Route", "12,340 Tons", "In Transit", "15 min ago"],
+          ["Lignite", "Bina Depot", "9,120 Tons", "Low Stock", "35 min ago"],
+          ["Coking Coal", "Raigarh Plant", "7,900 Tons", "Critical", "8 min ago"],
+          ["Semi-Coking", "Bilaspur Depot", "14,200 Tons", "Healthy", "21 min ago"]
+        ]
+      },
+      Manager: {
+        stats: [
+          { label: "Orders", value: "1,132", icon: "fa-solid fa-bag-shopping", accent: "orange" },
+          { label: "Inventory", value: "21,480 Tons", icon: "fa-solid fa-boxes-stacked", accent: "blue" },
+          { label: "Shipments", value: "864", icon: "fa-solid fa-shipping-fast", accent: "green" },
+          { label: "Reports", value: "39", icon: "fa-solid fa-chart-pie", accent: "orange" }
+        ],
+        activities: [
+          "Dispatch schedule updated for East branch",
+          "Two trucks delayed due to weather alerts",
+          "Inventory reconciliation completed",
+          "Weekly transport report shared with ops team"
+        ],
+        tableTitle: "Shipment Monitoring",
+        rows: [
+          ["Coal Lot 301", "Raigarh", "1,220 Tons", "On Time", "8 min ago"],
+          ["Coal Lot 402", "Bilaspur", "980 Tons", "Delayed", "19 min ago"],
+          ["Coal Lot 515", "Korba", "1,540 Tons", "In Transit", "31 min ago"]
+        ]
+      },
+      Customer: {
+        stats: [
+          { label: "My Orders", value: "24", icon: "fa-solid fa-bag-shopping", accent: "orange" },
+          { label: "My Shipments", value: "9", icon: "fa-solid fa-truck", accent: "blue" },
+          { label: "Delivery Status", value: "6 On Time", icon: "fa-solid fa-truck-ramp-box", accent: "green" },
+          { label: "Notifications", value: "3", icon: "fa-solid fa-bell", accent: "orange" }
+        ],
+        activities: [
+          "Order #C-188 approved and scheduled",
+          "Shipment #S-076 is in transit",
+          "Your delivery window is updated",
+          "New support message from logistics team"
+        ],
+        tableTitle: "My Orders",
+        rows: [
+          ["Grade A Coal", "Raigarh Plant", "800 Tons", "Dispatched", "2 hours ago"],
+          ["Grade B Coal", "Bina Depot", "620 Tons", "Pending", "4 hours ago"],
+          ["Grade C Coal", "Korba Yard", "450 Tons", "Delivered", "Yesterday"]
+        ]
+      }
+    };
+
+    let inventoryData = JSON.parse(localStorage.getItem(STORAGE_KEYS.inventory) || "null") || defaultInventory;
+    let shipmentData = JSON.parse(localStorage.getItem(STORAGE_KEYS.shipments) || "null") || defaultShipments;
+    let customerData = JSON.parse(localStorage.getItem(STORAGE_KEYS.customers) || "null") || defaultCustomers;
+
+    function saveInventoryData() {
+      localStorage.setItem(STORAGE_KEYS.inventory, JSON.stringify(inventoryData));
+    }
+
+    function saveShipmentData() {
+      localStorage.setItem(STORAGE_KEYS.shipments, JSON.stringify(shipmentData));
+    }
+
+    function saveCustomerData() {
+      localStorage.setItem(STORAGE_KEYS.customers, JSON.stringify(customerData));
+    }
+
+    function getCurrentCustomerRecord() {
+      if (currentRole !== "Customer") return null;
+      return customerData.find((customer) => customer.username === currentUser) || null;
+    }
+
+    function hasCustomerOrders(customer) {
+      if (!customer || !Array.isArray(customer.orders)) return false;
+      if (customer.orders.length === 0) {
+        return false;
+      }
+      return customer.orders.length > 0;
+    }
+
+    function ensureUserAccount(username, password, role, email) {
+      credentials[username] = { password, role, email: email || credentials[username]?.email || `${username}@coaltrack.local` };
+    }
+
+    function setActiveNav(target) {
+      [navDashboard, navInventory, navShipments, navCustomers].forEach((item) => {
+        if (!item) return;
+        item.classList.toggle("active", item === target);
+      });
+    }
+
+    function formatDisplayDate(dateValue) {
+      if (!dateValue) return "—";
+      const date = new Date(dateValue);
+      if (Number.isNaN(date.getTime())) return dateValue;
+      return date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+    }
+
+    function statusBadge(status) {
+      const normalized = (status || "").toLowerCase();
+      const base = "status-tag";
+      if (normalized.includes("healthy") || normalized.includes("active") || normalized.includes("delivered")) {
+        return `${base} ${normalized.includes("delivered") ? "" : ""}`;
+      }
+      if (normalized.includes("delay") || normalized.includes("critical") || normalized.includes("pending")) {
+        return `${base}`;
+      }
+      if (normalized.includes("low") || normalized.includes("in transit") || normalized.includes("reserved")) {
+        return `${base}`;
+      }
+      return base;
+    }
+
+    function getSelectedEntity(module) {
+      if (module === "inventory") return inventoryData.find((item) => item.id === selectedInventoryId) || null;
+      if (module === "shipments") return shipmentData.find((item) => item.id === selectedShipmentId) || null;
+      if (module === "customers") return customerData.find((item) => item.id === selectedCustomerId) || null;
+      return null;
+    }
+
+    function setSelection(module, id) {
+      if (module === "inventory") {
+        selectedInventoryId = id;
+      } else if (module === "shipments") {
+        selectedShipmentId = id;
+      } else if (module === "customers") {
+        selectedCustomerId = id;
+      }
+      document.querySelectorAll(".module-row").forEach((row) => {
+        const shouldSelect = row.dataset.id === id;
+        row.classList.toggle("selected", shouldSelect);
+      });
+    }
+
+    function openForgotPasswordModal() {
+      if (forgotPasswordModal) {
+        forgotPasswordModal.classList.add("visible");
+        forgotPasswordModal.setAttribute("aria-hidden", "false");
+        showForgotPasswordStep("email");
+      }
+    }
+
+    function closeForgotPasswordModal() {
+      if (forgotPasswordModal) {
+        forgotPasswordModal.classList.remove("visible");
+        forgotPasswordModal.setAttribute("aria-hidden", "true");
+      }
+      if (forgotPasswordForm) forgotPasswordForm.reset();
+      showForgotPasswordStep("email");
+    }
+
+    function showForgotPasswordStep(step) {
+      const map = {
+        email: forgotPasswordStepEmail,
+        otp: forgotPasswordStepOtp,
+        new: forgotPasswordStepNew
+      };
+      Object.entries(map).forEach(([key, node]) => {
+        if (!node) return;
+        node.classList.toggle("visible", key === step);
+      });
+    }
+
+    function generateOtp() {
+      return String(Math.floor(100000 + Math.random() * 900000));
+    }
+
+    function saveForgotPasswordState(payload) {
+      localStorage.setItem(STORAGE_KEYS.forgotPassword, JSON.stringify(payload));
+    }
+
+    function getForgotPasswordState() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEYS.forgotPassword) || "null") || {};
+    }
+
+    function resetPasswordFlow() {
+      const email = (resetEmail.value || "").trim();
+      const otp = generateOtp();
+      saveForgotPasswordState({ email, otp, verified: false, passwordReset: false });
+      alert(`OTP sent to ${email}. Demo OTP: ${otp}`);
+      showForgotPasswordStep("otp");
+      resetOtp.focus();
+    }
+
+    function renderModuleToolbar(module) {
+      if (!moduleToolbar || !panelActions) return;
+      const isAdmin = currentRole === "Admin";
+      const isManager = currentRole === "Manager";
+      const isCustomer = currentRole === "Customer";
+
+      if (module === "inventory") {
+        const selectedItem = getSelectedEntity("inventory");
+        panelActions.innerHTML = isAdmin
+          ? `
+            <button type="button" class="mini-btn" data-role="add" data-module="inventory">Add Inventory</button>
+            <button type="button" class="mini-btn" data-role="edit" data-module="inventory" ${selectedItem ? "" : "disabled"}>Edit Inventory</button>
+            <button type="button" class="mini-btn danger-btn" data-role="delete" data-module="inventory" ${selectedItem ? "" : "disabled"}>Delete Inventory</button>
+          `
+          : '<button type="button" class="mini-btn" disabled>View Only</button>';
+
+        const locations = [...new Set(inventoryData.map((item) => item.location))];
+        moduleToolbar.style.display = "flex";
+        moduleToolbar.innerHTML = `
+          <div class="toolbar-fields">
+            <input id="inventorySearch" class="search-field" type="text" placeholder="Search Inventory" />
+            <select id="inventoryStatusFilter" class="filter-select">
+              <option value="All">All Status</option>
+              <option value="Healthy">Healthy</option>
+              <option value="Low Stock">Low Stock</option>
+              <option value="Critical">Critical</option>
+              <option value="In Transit">In Transit</option>
+            </select>
+            <select id="inventoryLocationFilter" class="filter-select">
+              <option value="All">All Locations</option>
+              ${locations.map((location) => `<option value="${location}">${location}</option>`).join("")}
+            </select>
+          </div>
+        `;
+      } else if (module === "shipments") {
+        const selectedItem = getSelectedEntity("shipments");
+        panelActions.innerHTML = isAdmin || currentRole === "Manager"
+          ? `
+            <button type="button" class="mini-btn" data-role="add" data-module="shipments" ${!isAdmin ? "disabled" : ""}>Create Shipment</button>
+            <button type="button" class="mini-btn" data-role="edit" data-module="shipments" ${selectedItem && isAdmin ? "" : "disabled"}>Edit Shipment</button>
+            <button type="button" class="mini-btn danger-btn" data-role="delete" data-module="shipments" ${selectedItem && isAdmin ? "" : "disabled"}>Delete Shipment</button>
+          `
+          : '<button type="button" class="mini-btn" disabled>View Only</button>';
+
+        moduleToolbar.style.display = "flex";
+        moduleToolbar.innerHTML = `
+          <div class="toolbar-fields">
+            <input id="shipmentSearch" class="search-field" type="text" placeholder="Search Shipment" />
+          </div>
+        `;
+      } else if (module === "customers") {
+        const selectedItem = getSelectedEntity("customers");
+        panelActions.innerHTML = isAdmin
+          ? `
+            <button type="button" class="mini-btn" data-role="add" data-module="customers">Add Customer</button>
+            <button type="button" class="mini-btn" data-role="edit" data-module="customers" ${selectedItem ? "" : "disabled"}>Edit Customer</button>
+            <button type="button" class="mini-btn danger-btn" data-role="delete" data-module="customers" ${selectedItem ? "" : "disabled"}>Delete Customer</button>
+          `
+          : '<button type="button" class="mini-btn" disabled>View Only</button>';
+
+        moduleToolbar.style.display = "flex";
+        moduleToolbar.innerHTML = `
+          <div class="toolbar-fields">
+            <input id="customerSearch" class="search-field" type="text" placeholder="Search Customer" />
+          </div>
+        `;
+      } else {
+        panelActions.innerHTML = '<button class="mini-btn">View All</button>';
+        moduleToolbar.style.display = "none";
+        moduleToolbar.innerHTML = "";
+      }
+
+      bindModuleActionButtons();
+    }
+
+    function renderInventoryTable() {
+      const search = (document.getElementById("inventorySearch") || { value: "" }).value.trim().toLowerCase();
+      const filterStatus = (document.getElementById("inventoryStatusFilter") || { value: "All" }).value;
+      const filterLocation = (document.getElementById("inventoryLocationFilter") || { value: "All" }).value;
+
+      const filtered = inventoryData.filter((item) => {
+        const matchesText = !search || [item.itemName, item.location, item.quantity, item.status].join(" ").toLowerCase().includes(search);
+        const matchesStatus = filterStatus === "All" || item.status === filterStatus;
+        const matchesLocation = filterLocation === "All" || item.location === filterLocation;
+        return matchesText && matchesStatus && matchesLocation;
+      });
+
+      if (tableHeaders) {
+        tableHeaders.innerHTML = `
+          <th>Item Name</th>
+          <th>Location</th>
+          <th>Quantity</th>
+          <th>Status</th>
+          <th>Last Updated</th>
+        `;
+      }
+
+      if (tableTitle) tableTitle.textContent = "Inventory Management";
+      if (tableBody) {
+        tableBody.innerHTML = filtered.map((item) => `
+          <tr class="module-row ${selectedInventoryId === item.id ? "selected" : ""}" data-id="${item.id}" data-module="inventory">
+            <td>${item.itemName}</td>
+            <td>${item.location}</td>
+            <td>${item.quantity}</td>
+            <td><span class="status-tag">${item.status}</span></td>
+            <td>${item.lastUpdated}</td>
+          </tr>
+        `).join("") || '<tr><td colspan="5" style="text-align:center; padding: 1.5rem; color:#94a3b8;">No inventory items match your filters.</td></tr>';
+      }
+
+      bindModuleSelectionHandlers();
+    }
+
+    function renderShipmentTable() {
+      const search = (document.getElementById("shipmentSearch") || { value: "" }).value.trim().toLowerCase();
+      const filtered = shipmentData.filter((item) => {
+        const matchesText = !search || [item.shipmentId, item.source, item.destination, item.status, item.quantity].join(" ").toLowerCase().includes(search);
+        return matchesText;
+      });
+
+      if (tableHeaders) {
+        tableHeaders.innerHTML = `
+          <th>Shipment ID</th>
+          <th>Source</th>
+          <th>Destination</th>
+          <th>Quantity</th>
+          <th>Dispatch Date</th>
+          <th>Delivery Date</th>
+          <th>Status</th>
+        `;
+      }
+
+      if (tableTitle) tableTitle.textContent = "Shipment Management";
+      if (tableBody) {
+        tableBody.innerHTML = filtered.map((item) => `
+          <tr class="module-row ${selectedShipmentId === item.id ? "selected" : ""}" data-id="${item.id}" data-module="shipments">
+            <td>${item.shipmentId}</td>
+            <td>${item.source}</td>
+            <td>${item.destination}</td>
+            <td>${item.quantity}</td>
+            <td>${formatDisplayDate(item.dispatchDate)}</td>
+            <td>${formatDisplayDate(item.deliveryDate)}</td>
+            <td><span class="status-tag">${item.status}</span></td>
+          </tr>
+        `).join("") || '<tr><td colspan="7" style="text-align:center; padding: 1.5rem; color:#94a3b8;">No shipments match your search.</td></tr>';
+      }
+
+      bindModuleSelectionHandlers();
+    }
+
+    function renderCustomerTable() {
+      const search = (document.getElementById("customerSearch") || { value: "" }).value.trim().toLowerCase();
+      let filtered = [];
+
+      if (currentRole === "Customer") {
+        const currentCustomer = customerData.find((customer) => customer.username === currentUser) || customerData[0];
+        filtered = currentCustomer ? [currentCustomer] : [];
+      } else if (currentRole === "Manager") {
+        filtered = customerData;
+      } else {
+        filtered = customerData.filter((customer) => {
+          if (!search) return true;
+          return [customer.customerName, customer.companyName, customer.email, customer.phoneNumber].join(" ").toLowerCase().includes(search);
+        });
+      }
+
+      if (currentRole === "Customer" && search) {
+        filtered = filtered.filter((customer) => [customer.customerName, customer.companyName, customer.email].join(" ").toLowerCase().includes(search));
+      }
+
+      if (tableHeaders) {
+        tableHeaders.innerHTML = `
+          <th>Customer Name</th>
+          <th>Company Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Address</th>
+          <th>Status</th>
+        `;
+      }
+
+      if (tableTitle) tableTitle.textContent = currentRole === "Customer" ? "My Customer Information" : "Customer Management";
+      if (tableBody) {
+        tableBody.innerHTML = filtered.map((customer) => `
+          <tr class="module-row ${selectedCustomerId === customer.id ? "selected" : ""}" data-id="${customer.id}" data-module="customers">
+            <td>${customer.customerName}</td>
+            <td>${customer.companyName}</td>
+            <td>${customer.email}</td>
+            <td>${customer.phoneNumber}</td>
+            <td>${customer.address}</td>
+            <td><span class="status-tag">${customer.status}</span></td>
+          </tr>
+        `).join("") || '<tr><td colspan="6" style="text-align:center; padding: 1.5rem; color:#94a3b8;">No customer records found.</td></tr>';
+      }
+
+      bindModuleSelectionHandlers();
+    }
+
+    function bindModuleSelectionHandlers() {
+      document.querySelectorAll(".module-row").forEach((row) => {
+        row.addEventListener("click", () => {
+          const module = row.dataset.module;
+          const id = row.dataset.id;
+          if (module === "inventory") setSelection("inventory", id);
+          if (module === "shipments") setSelection("shipments", id);
+          if (module === "customers") setSelection("customers", id);
+          renderModuleToolbar(module);
+        });
+      });
+    }
+
+    function bindModuleActionButtons() {
+      document.querySelectorAll("[data-role]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const { module, role } = button.dataset;
+          if (role === "add") openEntityModal(module);
+          if (role === "edit") {
+            const item = getSelectedEntity(module);
+            if (item) openEntityModal(module, item);
+          }
+          if (role === "delete") {
+            const item = getSelectedEntity(module);
+            if (!item) return;
+            const label = module === "inventory" ? item.itemName : module === "shipments" ? item.shipmentId : item.companyName;
+            if (window.confirm(`Are you sure you want to delete ${label}?`)) {
+              if (module === "inventory") {
+                inventoryData = inventoryData.filter((entry) => entry.id !== item.id);
+                saveInventoryData();
+                selectedInventoryId = null;
+                renderInventoryModule();
+              } else if (module === "shipments") {
+                shipmentData = shipmentData.filter((entry) => entry.id !== item.id);
+                saveShipmentData();
+                selectedShipmentId = null;
+                renderShipmentModule();
+              } else {
+                customerData = customerData.filter((entry) => entry.id !== item.id);
+                saveCustomerData();
+                selectedCustomerId = null;
+                renderCustomerModule();
+              }
+            }
+          }
+        });
+      });
+    }
+
+    function openEntityModal(module, item = null) {
+      const form = document.getElementById("entityForm");
+      const modal = document.getElementById("entityModal");
+      const title = document.getElementById("entityModalTitle");
+      const fieldContainer = document.getElementById("entityFormFields");
+
+      if (!form || !modal || !title || !fieldContainer) return;
+
+      form.dataset.module = module;
+      form.dataset.editId = item ? item.id : "";
+
+      let fields = "";
+      if (module === "inventory") {
+        title.textContent = item ? "Edit Inventory Item" : "Add Inventory Item";
+        fields = `
+          <div class="form-row">
+            <div class="field-block"><label>Item Name</label><input class="form-field" name="itemName" value="${item?.itemName || ""}" required /></div>
+            <div class="field-block"><label>Location</label><input class="form-field" name="location" value="${item?.location || ""}" required /></div>
+          </div>
+          <div class="form-row">
+            <div class="field-block"><label>Quantity</label><input class="form-field" name="quantity" value="${item?.quantity || ""}" required /></div>
+            <div class="field-block"><label>Status</label><select class="form-field" name="status"><option value="Healthy" ${item?.status === "Healthy" ? "selected" : ""}>Healthy</option><option value="Low Stock" ${item?.status === "Low Stock" ? "selected" : ""}>Low Stock</option><option value="Critical" ${item?.status === "Critical" ? "selected" : ""}>Critical</option><option value="In Transit" ${item?.status === "In Transit" ? "selected" : ""}>In Transit</option></select></div>
+          </div>
+          <div class="field-block"><label>Last Updated</label><input class="form-field" name="lastUpdated" value="${item?.lastUpdated || "Just now"}" required /></div>
+        `;
+      }
+
+      if (module === "shipments") {
+        title.textContent = item ? "Edit Shipment" : "Create Shipment";
+        fields = `
+          <div class="form-row">
+            <div class="field-block"><label>Shipment ID</label><input class="form-field" name="shipmentId" value="${item?.shipmentId || ""}" required /></div>
+            <div class="field-block"><label>Quantity</label><input class="form-field" name="quantity" value="${item?.quantity || ""}" required /></div>
+          </div>
+          <div class="form-row">
+            <div class="field-block"><label>Source</label><input class="form-field" name="source" value="${item?.source || ""}" required /></div>
+            <div class="field-block"><label>Destination</label><input class="form-field" name="destination" value="${item?.destination || ""}" required /></div>
+          </div>
+          <div class="form-row">
+            <div class="field-block"><label>Dispatch Date</label><input class="form-field" name="dispatchDate" type="date" value="${item?.dispatchDate || ""}" required /></div>
+            <div class="field-block"><label>Delivery Date</label><input class="form-field" name="deliveryDate" type="date" value="${item?.deliveryDate || ""}" required /></div>
+          </div>
+          <div class="field-block"><label>Status</label><select class="form-field" name="status"><option value="Pending" ${item?.status === "Pending" ? "selected" : ""}>Pending</option><option value="In Transit" ${item?.status === "In Transit" ? "selected" : ""}>In Transit</option><option value="Delayed" ${item?.status === "Delayed" ? "selected" : ""}>Delayed</option><option value="Delivered" ${item?.status === "Delivered" ? "selected" : ""}>Delivered</option></select></div>
+        `;
+      }
+
+      if (module === "customers") {
+        title.textContent = item ? "Edit Customer" : "Add Customer";
+        fields = `
+          <div class="form-row">
+            <div class="field-block"><label>Customer Name</label><input class="form-field" name="customerName" value="${item?.customerName || ""}" required /></div>
+            <div class="field-block"><label>Company Name</label><input class="form-field" name="companyName" value="${item?.companyName || ""}" required /></div>
+          </div>
+          <div class="form-row">
+            <div class="field-block"><label>Email</label><input class="form-field" name="email" type="email" value="${item?.email || ""}" required /></div>
+            <div class="field-block"><label>Phone Number</label><input class="form-field" name="phoneNumber" value="${item?.phoneNumber || ""}" required /></div>
+          </div>
+          <div class="field-block"><label>Address</label><textarea class="textarea-field" name="address" rows="3" required>${item?.address || ""}</textarea></div>
+          <div class="field-block"><label>Status</label><select class="form-field" name="status"><option value="Active" ${item?.status === "Active" ? "selected" : ""}>Active</option><option value="Pending" ${item?.status === "Pending" ? "selected" : ""}>Pending</option><option value="Inactive" ${item?.status === "Inactive" ? "selected" : ""}>Inactive</option></select></div>
+        `;
+      }
+
+      fieldContainer.innerHTML = fields;
+      modal.classList.add("visible");
+    }
+
+    function closeEntityModal() {
+      const modal = document.getElementById("entityModal");
+      if (modal) modal.classList.remove("visible");
+    }
+
+    function saveEntityForm(event) {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const module = form.dataset.module;
+      const serialized = Object.fromEntries(new FormData(form).entries());
+
+      if (module === "inventory") {
+        const index = inventoryData.findIndex((item) => item.id === form.dataset.editId);
+        const entry = {
+          id: form.dataset.editId || `INV-${Date.now()}`,
+          itemName: serialized.itemName.trim(),
+          location: serialized.location.trim(),
+          quantity: serialized.quantity.trim(),
+          status: serialized.status,
+          lastUpdated: serialized.lastUpdated.trim() || "Just now"
+        };
+        if (index >= 0) inventoryData[index] = entry;
+        else inventoryData.unshift(entry);
+        saveInventoryData();
+        selectedInventoryId = entry.id;
+        renderInventoryModule();
+      }
+
+      if (module === "shipments") {
+        const index = shipmentData.findIndex((item) => item.id === form.dataset.editId);
+        const entry = {
+          id: form.dataset.editId || `SHIP-${Date.now()}`,
+          shipmentId: serialized.shipmentId.trim(),
+          source: serialized.source.trim(),
+          destination: serialized.destination.trim(),
+          quantity: serialized.quantity.trim(),
+          dispatchDate: serialized.dispatchDate,
+          deliveryDate: serialized.deliveryDate,
+          status: serialized.status
+        };
+        if (index >= 0) shipmentData[index] = entry;
+        else shipmentData.unshift(entry);
+        saveShipmentData();
+        selectedShipmentId = entry.id;
+        renderShipmentModule();
+      }
+
+      if (module === "customers") {
+        const index = customerData.findIndex((item) => item.id === form.dataset.editId);
+        const entry = {
+          id: form.dataset.editId || `CUST-${Date.now()}`,
+          customerName: serialized.customerName.trim(),
+          companyName: serialized.companyName.trim(),
+          email: serialized.email.trim(),
+          phoneNumber: serialized.phoneNumber.trim(),
+          address: serialized.address.trim(),
+          status: serialized.status,
+          username: serialized.email.trim().split("@")[0].toLowerCase()
+        };
+        if (index >= 0) customerData[index] = { ...customerData[index], ...entry };
+        else customerData.unshift(entry);
+        saveCustomerData();
+        selectedCustomerId = entry.id;
+        renderCustomerModule();
+      }
+
+      closeEntityModal();
+    }
+
+    function renderInventoryModule() {
+      currentView = "inventory";
+      setActiveNav(navInventory);
+      if (breadcrumbText) breadcrumbText.textContent = "Dashboard / Inventory Management";
+      if (dashboardMainContent) dashboardMainContent.style.display = "none";
+      renderModuleToolbar("inventory");
+      renderInventoryTable();
+      renderCharts();
+    }
+
+    function renderShipmentModule() {
+      currentView = "shipments";
+      setActiveNav(navShipments);
+      if (breadcrumbText) breadcrumbText.textContent = "Dashboard / Shipment Management";
+      if (dashboardMainContent) dashboardMainContent.style.display = "none";
+      renderModuleToolbar("shipments");
+      renderShipmentTable();
+      renderCharts();
+    }
+
+    function renderCustomerModule() {
+      currentView = "customers";
+      setActiveNav(navCustomers);
+      if (breadcrumbText) breadcrumbText.textContent = "Dashboard / Customer Management";
+      if (dashboardMainContent) dashboardMainContent.style.display = "none";
+      renderModuleToolbar("customers");
+      renderCustomerTable();
+      renderCharts();
+    }
+
+    function renderCharts() {
+      if (!window.Chart) return;
+
+      const currentCustomer = getCurrentCustomerRecord();
+      const customerHasNoOrders = currentRole === "Customer" && (!currentCustomer || !hasCustomerOrders(currentCustomer));
+      const shipmentLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+      const shipmentValues = customerHasNoOrders ? [0, 0, 0, 0, 0, 0] : [120, 160, 145, 180, 220, 210];
+      const inventoryValues = customerHasNoOrders ? [0, 0, 0, 0] : Object.values(
+        inventoryData.reduce((acc, item) => {
+          acc[item.status] = (acc[item.status] || 0) + 1;
+          return acc;
+        }, {})
+      );
+      const inventoryLabels = ["Healthy", "Low Stock", "Critical", "In Transit"];
+      const customerValues = customerHasNoOrders ? [0, 0, 0, 0, 0, 0] : [12, 18, 30, 42, 55, 68];
+      const orderValues = customerHasNoOrders ? [0, 0, 0, 0, 0, 0] : [40, 62, 54, 78, 58, 66];
+
+      const chartMap = [
+        { id: "monthlyShipmentsChart", type: "bar", labels: shipmentLabels, values: shipmentValues, color: "#f59e0b", title: "Monthly Shipments" },
+        { id: "inventoryDistributionChart", type: "doughnut", labels: inventoryLabels, values: inventoryValues, color: "#10b981", title: "Inventory Distribution" },
+        { id: "customerGrowthChart", type: "line", labels: shipmentLabels, values: customerValues, color: "#f59e0b", title: "Customer Growth" },
+        { id: "orderStatisticsChart", type: "radar", labels: ["Pending", "In Transit", "Delayed", "Delivered"], values: orderValues, color: "#34d399", title: "Order Statistics" }
+      ];
+
+      chartMap.forEach((chartDef) => {
+        const canvas = document.getElementById(chartDef.id);
+        if (!canvas) return;
+
+        const prevInstance = Chart.getChart(canvas);
+        if (prevInstance) prevInstance.destroy();
+
+        new Chart(canvas, {
+          type: chartDef.type,
+          data: {
+            labels: chartDef.labels,
+            datasets: [{
+              label: chartDef.title,
+              data: chartDef.values,
+              backgroundColor: chartDef.type === "bar"
+                ? "rgba(245, 158, 11, 0.7)"
+                : chartDef.type === "doughnut"
+                  ? ["rgba(16, 185, 129, 0.75)", "rgba(245, 158, 11, 0.75)", "rgba(244, 63, 94, 0.75)", "rgba(59, 130, 246, 0.75)"]
+                  : chartDef.type === "line"
+                    ? "rgba(245, 158, 11, 0.7)"
+                    : "rgba(52, 211, 153, 0.5)",
+              borderColor: chartDef.type === "bar" || chartDef.type === "line" ? "#f59e0b" : "#0f172a",
+              tension: 0.3,
+              fill: chartDef.type === "line",
+              pointRadius: 4,
+              borderWidth: 2,
+              borderDash: chartDef.type === "radar" ? [5, 5] : []
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: chartDef.type !== "bar", labels: { color: "#cbd5e1" } }
+            },
+            scales: chartDef.type === "radar" || chartDef.type === "line" || chartDef.type === "bar"
+              ? {
+                  x: { ticks: { color: "#cbd5e1" }, grid: { color: "rgba(148, 163, 184, 0.15)" } },
+                  y: { ticks: { color: "#cbd5e1" }, grid: { color: "rgba(148, 163, 184, 0.15)" } }
+                }
+              : { }
+          }
+        });
+      });
+    }
+
+    function showDashboard(username, role) {
+      currentUser = username;
+      currentRole = role;
+      loginPage.style.display = "none";
+      dashboardPage.style.display = "flex";
+
+      const welcomeMsg = document.getElementById("welcomeMessage");
+      const topUser = document.getElementById("topUserName");
+      const avatarInitial = document.getElementById("avatarInitial");
+
+      if (welcomeMsg) welcomeMsg.textContent = `Welcome ${username} (${role}) to CoalTrack Supply Chain Management System`;
+      if (topUser) topUser.textContent = username;
+      if (avatarInitial) avatarInitial.textContent = username.charAt(0).toUpperCase();
+
+      renderDashboard(role);
+    }
+
+    function renderDashboard(role) {
+      const data = dashboardData[role];
+      if (!data) return;
+
+      const statsGrid = document.getElementById("statsGrid");
+      const activityList = document.getElementById("activityList");
+      const tableBodyRef = document.getElementById("tableBody");
+      const currentCustomer = role === "Customer" ? getCurrentCustomerRecord() : null;
+      const customerHasNoOrders = role === "Customer" && (!currentCustomer || !hasCustomerOrders(currentCustomer));
+
+      if (role === "Customer" && customerHasNoOrders) {
+        if (statsGrid) {
+          statsGrid.innerHTML = [
+            { label: "My Orders", value: "0", icon: "fa-solid fa-bag-shopping", accent: "orange" },
+            { label: "My Shipments", value: "0", icon: "fa-solid fa-truck", accent: "blue" },
+            { label: "Delivery Status", value: "0", icon: "fa-solid fa-truck-ramp-box", accent: "green" },
+            { label: "Notifications", value: "0", icon: "fa-solid fa-bell", accent: "orange" }
+          ].map((item) => `
+            <div class="stat-card">
+              <div class="stat-icon ${item.accent}">
+                <i class="${item.icon}"></i>
+              </div>
+              <div class="stat-content">
+                <span>${item.label}</span>
+                <strong>${item.value}</strong>
+              </div>
+            </div>
+          `).join("");
+        }
+
+        if (activityList) {
+          activityList.innerHTML = `
+            <li>
+              <span class="dot"></span>
+              <span>No recent activities available</span>
+            </li>
+            <li>
+              <span class="dot"></span>
+              <span>Place your first order to get started</span>
+            </li>
+          `;
+        }
+
+        if (tableTitle) tableTitle.textContent = "My Orders";
+        if (tableBodyRef) {
+          tableBodyRef.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align:center; padding: 1.5rem; color:#94a3b8;">
+                <div style="font-weight:700; color:#f1f5f9; margin-bottom:0.35rem;">Welcome to CoalTrack!</div>
+                <div>You haven't placed any orders yet.</div>
+                <div>Start by creating your first order.</div>
+              </td>
+            </tr>
+          `;
+        }
+      } else {
+        if (statsGrid) {
+          statsGrid.innerHTML = data.stats.map((item) => `
+            <div class="stat-card">
+              <div class="stat-icon ${item.accent}">
+                <i class="${item.icon}"></i>
+              </div>
+              <div class="stat-content">
+                <span>${item.label}</span>
+                <strong>${item.value}</strong>
+              </div>
+            </div>
+          `).join("");
+        }
+
+        if (activityList) {
+          activityList.innerHTML = data.activities.map((item) => `
+            <li>
+              <span class="dot"></span>
+              <span>${item}</span>
+            </li>
+          `).join("");
+        }
+
+        if (tableTitle) tableTitle.textContent = data.tableTitle;
+        if (tableBodyRef) {
+          tableBodyRef.innerHTML = data.rows.map((row) => `
+            <tr>
+              <td>${row[0]}</td>
+              <td>${row[1]}</td>
+              <td>${row[2]}</td>
+              <td><span class="status-tag">${row[3]}</span></td>
+              <td>${row[4]}</td>
+            </tr>
+          `).join("");
+        }
+      }
+
+      if (dashboardMainContent) dashboardMainContent.style.display = "block";
+      if (moduleToolbar) moduleToolbar.style.display = "none";
+      renderCharts();
+    }
+
+    function showLogin() {
+      loginPage.style.display = "flex";
+      dashboardPage.style.display = "none";
+      if (loginCardView) loginCardView.style.display = "block";
+      if (registerCardView) registerCardView.style.display = "none";
+      if (moduleToolbar) moduleToolbar.style.display = "none";
+    }
+
+    const togglePassBtn = document.querySelector(".toggle-password");
+    if (togglePassBtn) {
+      togglePassBtn.addEventListener("click", function () {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        this.innerHTML = isPassword
+          ? '<i class="fa-regular fa-eye-slash"></i>'
+          : '<i class="fa-regular fa-eye"></i>';
+      });
+    }
+
+    if (showRegisterLink) {
+      showRegisterLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (loginCardView) loginCardView.style.display = "none";
+        if (registerCardView) registerCardView.style.display = "block";
+        if (registerError) registerError.textContent = "";
+      });
+    }
+
+    if (showLoginLink) {
+      showLoginLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (registerCardView) registerCardView.style.display = "none";
+        if (loginCardView) loginCardView.style.display = "block";
+        if (loginError) loginError.textContent = "";
+      });
+    }
+
+    if (registerForm) {
+      registerForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const company = regCompany.value.trim();
+        const newUname = regUsername.value.trim().toLowerCase();
+        const newPass = regPassword.value.trim();
+
+        if (!company) {
+          registerError.textContent = "Please enter your company name.";
+          regCompany.focus();
+          return;
+        }
+        if (!newUname) {
+          registerError.textContent = "Please choose a username.";
+          regUsername.focus();
+          return;
+        }
+        if (!newPass) {
+          registerError.textContent = "Please choose a password.";
+          regPassword.focus();
+          return;
+        }
+
+        ensureUserAccount(newUname, newPass, "Customer", `${newUname}@coaltrack.local`);
+        customerData.unshift({
+          id: `CUST-${Date.now()}`,
+          customerName: `${company} Customer`,
+          companyName: company,
+          email: `${newUname}@coaltrack.local`,
+          phoneNumber: "Not provided",
+          address: "Not provided",
+          status: "Active",
+          username: newUname,
+          orders: []
+        });
+        saveCustomerData();
+
+        registerError.textContent = "";
+        alert(`Account successfully created for ${company}! Welcome to CoalTrack.`);
+        showDashboard(newUname, "Customer");
+      });
+    }
+
+    if (navDashboard) {
+      navDashboard.addEventListener("click", (e) => {
+        e.preventDefault();
+        currentView = "dashboard";
+        setActiveNav(navDashboard);
+        if (breadcrumbText) breadcrumbText.textContent = "Dashboard / Overview";
+        if (dashboardMainContent) dashboardMainContent.style.display = "block";
+        renderDashboard(currentRole);
+      });
+    }
+
+    if (navInventory) {
+      navInventory.addEventListener("click", (e) => {
+        e.preventDefault();
+        renderInventoryModule();
+      });
+    }
+
+    if (navShipments) {
+      navShipments.addEventListener("click", (e) => {
+        e.preventDefault();
+        renderShipmentModule();
+      });
+    }
+
+    if (navCustomers) {
+      navCustomers.addEventListener("click", (e) => {
+        e.preventDefault();
+        renderCustomerModule();
+      });
+    }
+
+    if (closeForgotPassword) {
+      closeForgotPassword.addEventListener("click", closeForgotPasswordModal);
+    }
+
+    if (forgotPasswordLink) {
+      forgotPasswordLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        openForgotPasswordModal();
+      });
+    }
+
+    if (forgotPasswordForm) {
+      forgotPasswordForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const email = (resetEmail.value || "").trim();
+        const state = getForgotPasswordState();
+
+        if (event.submitter && event.submitter.type === "submit" && event.submitter.textContent.includes("Update Password")) {
+          const newValue = newPassword.value.trim();
+          const confirmValue = confirmPassword.value.trim();
+
+          if (!newValue || !confirmValue) {
+            alert("Please enter and confirm your new password.");
+            return;
+          }
+
+          if (newValue !== confirmValue) {
+            alert("Passwords do not match.");
+            return;
+          }
+
+          const userMatch = Object.entries(credentials).find(([username, user]) => user.email === state.email);
+          if (!userMatch) {
+            alert("No matching email was found for password reset.");
+            return;
+          }
+
+          const [username, userData] = userMatch;
+          userData.password = newValue;
+          credentials[username] = userData;
+          saveForgotPasswordState({ ...state, verified: true, passwordReset: true });
+          alert("Password updated successfully.");
+          closeForgotPasswordModal();
+          return;
+        }
+
+        if (!email) {
+          alert("Please enter your email address.");
+          resetEmail.focus();
+          return;
+        }
+
+        const knownEmail = Object.values(credentials).some((user) => user.email === email);
+        if (!knownEmail) {
+          alert("Email not found. Please enter a registered account email.");
+          return;
+        }
+        resetPasswordFlow();
+      });
+    }
+
+    if (verifyOtpBtn) {
+      verifyOtpBtn.addEventListener("click", () => {
+        const state = getForgotPasswordState();
+        const enteredOtp = (resetOtp.value || "").trim();
+        if (!enteredOtp) {
+          alert("Please enter your OTP.");
+          resetOtp.focus();
+          return;
+        }
+        if (enteredOtp !== state.otp) {
+          alert("Invalid OTP. Please try again.");
+          return;
+        }
+        saveForgotPasswordState({ ...state, verified: true });
+        showForgotPasswordStep("new");
+      });
+    }
+
+    if (backToEmailStep) {
+      backToEmailStep.addEventListener("click", () => showForgotPasswordStep("email"));
+    }
+
+    if (backToOtpStep) {
+      backToOtpStep.addEventListener("click", () => showForgotPasswordStep("otp"));
+    }
+
+    const entityForm = document.getElementById("entityForm");
+    if (entityForm) {
+      entityForm.addEventListener("submit", saveEntityForm);
+    }
+
+    document.getElementById("entityModalClose")?.addEventListener("click", closeEntityModal);
+    document.getElementById("cancelEntityModal")?.addEventListener("click", closeEntityModal);
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", function () {
+        localStorage.removeItem("coaltrackRemembered");
+        if (loginError) loginError.textContent = "";
+        if (loginForm) loginForm.reset();
+        showLogin();
+      });
+    }
+
+    if (loginForm) {
+      loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const enteredUser = usernameInput.value.trim().toLowerCase();
+        const enteredPassword = passwordInput.value.trim();
+
+        if (!enteredUser) {
+          loginError.textContent = "Please enter your username.";
+          usernameInput.focus();
+          return;
+        }
+
+        if (!enteredPassword) {
+          loginError.textContent = "Please enter your password.";
+          passwordInput.focus();
+          return;
+        }
+
+        const user = credentials[enteredUser];
+
+        if (user && enteredPassword === user.password) {
+          loginError.textContent = "";
+          if (rememberMe && rememberMe.checked) {
+            localStorage.setItem("coaltrackRemembered", JSON.stringify({ username: enteredUser, role: user.role }));
+          } else {
+            localStorage.removeItem("coaltrackRemembered");
+          }
+          showDashboard(enteredUser, user.role);
+        } else {
+          loginError.textContent = "Invalid Username or Password.";
+          alert("Invalid Username or Password. If you are a new customer, please click 'Create an account' below.");
+          passwordInput.focus();
+        }
+      });
+    }
+
+    const savedSession = JSON.parse(localStorage.getItem("coaltrackRemembered") || "null");
+    if (savedSession) {
+      if (usernameInput) usernameInput.value = savedSession.username;
+      showDashboard(savedSession.username, savedSession.role);
+    } else {
+      showLogin();
+    }
+
+    document.addEventListener("input", (event) => {
+      if (event.target && event.target.id === "inventorySearch") renderInventoryTable();
+      if (event.target && event.target.id === "shipmentSearch") renderShipmentTable();
+      if (event.target && event.target.id === "customerSearch") renderCustomerTable();
+      if (event.target && event.target.id === "inventoryStatusFilter") renderInventoryTable();
+      if (event.target && event.target.id === "inventoryLocationFilter") renderInventoryTable();
+    });
+
+    document.addEventListener("change", (event) => {
+      if (event.target && event.target.id === "inventoryStatusFilter") renderInventoryTable();
+      if (event.target && event.target.id === "inventoryLocationFilter") renderInventoryTable();
+    });
+  </script>
+</body>
+</html>
