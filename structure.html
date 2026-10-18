@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coal Demand & Supply Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .section {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .role-badge {
+            background: #e2e8f0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        input, button, select {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-approve { background: #28a745; }
+        .btn-add { background: #17a2b8; }
+        .btn-reset { background: #dc3545; }
+        ul { padding-left: 20px; }
+        
+        /* Utility class to hide sections based on role */
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Coal Demand & Supply Tracker</h2>
+
+    <!-- LOGIN / ROLE SIMULATION (Integration point for teammate's auth) -->
+    <div id="loginSection" class="section">
+        <h3>Sign In / Select Role</h3>
+        <label>User Name:</label>
+        <input type="text" id="userName" placeholder="e.g. Somaiya Power Plant">
+
+        <label>Select Role:</label>
+        <select id="userRole">
+            <option value="demander">Demander</option>
+            <option value="supplier">Supplier</option>
+        </select>
+
+        <button onclick="loginUser()">Sign In to Dashboard</button>
+    </div>
+
+    <!-- MAIN DASHBOARD (Hidden until user logs in) -->
+    <div id="dashboard" class="hidden">
+        
+        <div class="role-badge">
+            Logged in as: <span id="currentUserName"></span> (<span id="currentUserRole"></span>)
+            <button onclick="logoutUser()" style="width:auto; padding:3px 8px; font-size:12px; margin-left:10px; background:#6c757d;">Logout</button>
+        </div>
+
+        <!-- Shared Inventory View -->
+        <div class="stats">
+            <div>
+                <h3 id="total">1000</h3>
+                <small>Total Stock (Tons)</small>
+            </div>
+            <div>
+                <h3 id="requested">0</h3>
+                <small>Pending Demand</small>
+            </div>
+            <div>
+                <h3 id="remaining">1000</h3>
+                <small>Available</small>
+            </div>
+        </div>
+
+        <!-- DEMANDER PORTAL (Only visible if role === 'demander') -->
+        <div id="demanderPortal" class="section hidden">
+            <h3>Demander Portal (Request Coal)</h3>
+            <label>Quantity Demanded (Tons):</label>
+            <input type="number" id="demandQty" placeholder="e.g. 100">
+
+            <button onclick="requestCoal()">Submit Demand Request</button>
+        </div>
+
+        <!-- SUPPLIER PORTAL (Only visible if role === 'supplier') -->
+        <div id="supplierPortal" class="section hidden">
+            <h3>Supplier Portal (Fulfill Demand)</h3>
+            <p><strong>Current Active Demand:</strong> <span id="activeDemandInfo">None</span></p>
+            <button class="btn-approve" onclick="approveDemand()">Approve & Dispatch Demand</button>
+            <button class="btn-add" onclick="addStock()">Add New Coal Stock</button>
+            <button class="btn-reset" onclick="resetData()">Reset Tracker</button>
+        </div>
+
+        <h3>Activity Log</h3>
+        <ul id="logList"></ul>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
